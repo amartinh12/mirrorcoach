@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react';
+import SessionBanner from '../../components/SessionBanner';
+import SchedulingModal from '../../components/SchedulingModal';
+import CancelSessionDialog from '../../components/CancelSessionDialog';
 
 function Therapy() {
   const [message, setMessage] = useState('');
@@ -23,8 +26,21 @@ function Therapy() {
     },
   ]);
 
-  const [moodCheckedToday, setMoodCheckedToday] = useState(false);
+  const [, setMoodCheckedToday] = useState(false);
   const [showMoodCheckIn, setShowMoodCheckIn] = useState(false);
+  const [showSchedulingModal, setShowSchedulingModal] = useState(false);
+  const [showCancelDialog, setShowCancelDialog] = useState(false);
+  const [rescheduleMode, setRescheduleMode] = useState(false);
+
+  // Session data - state based for updates
+  const [sessionData, setSessionData] = useState({
+    coachName: 'Dr. Thompson',
+    nextSession: 'Tomorrow • 2:00 PM',
+    fullDate: 'Tuesday, January 28, 2025 • 2:00 PM',
+    sessionType: 'video',
+    sessionAddress: '123 Wellness Ave, Suite 200',
+    hasSession: true,
+  });
 
   const moodOptions = [
     { emoji: '😊', label: 'Good', value: 'good' },
@@ -115,36 +131,93 @@ function Therapy() {
     }
   };
 
+  const handleScheduleSession = () => {
+    setRescheduleMode(false);
+    setShowSchedulingModal(true);
+  };
+
+  const handleSessionDetails = () => {
+    alert('Opening session details panel...');
+  };
+
+  const handleRescheduleSession = () => {
+    setRescheduleMode(true);
+    setShowSchedulingModal(true);
+  };
+
+  const handleCancelSession = () => {
+    setShowCancelDialog(true);
+  };
+
+  const handleConfirmCancel = () => {
+    setSessionData(prev => ({
+      ...prev,
+      hasSession: false,
+    }));
+    setShowCancelDialog(false);
+    alert('Session cancelled');
+  };
+
+  const handleBookingConfirm = (bookingData) => {
+    if (bookingData.mode === 'reschedule') {
+      // Extract date label for nextSession (e.g., "Tuesday, Jan 28" from "Tuesday, Jan 28, 2025")
+      const dateParts = bookingData.date.split(',');
+      const nextSessionDate = `${dateParts[0]}, ${dateParts[1].trim()}`;
+      
+      setSessionData(prev => ({
+        ...prev,
+        nextSession: `${nextSessionDate} • ${bookingData.time}`,
+        fullDate: `${bookingData.date} • ${bookingData.time}`,
+        sessionType: bookingData.type,
+      }));
+      alert(`Session rescheduled! ${bookingData.date} at ${bookingData.time} - ${bookingData.type === 'video' ? 'Video Call' : 'In Person'}`);
+    } else {
+      alert(`Booking confirmed! ${bookingData.date} at ${bookingData.time} - ${bookingData.type === 'video' ? 'Video Call' : 'In Person'}`);
+    }
+    setShowSchedulingModal(false);
+    setRescheduleMode(false);
+  };
+
   return (
     <div style={{ 
-      maxWidth: '800px', 
+      maxWidth: '400px', 
       margin: '0 auto',
       height: 'calc(100vh - 140px)',
       display: 'flex',
       flexDirection: 'column',
     }}>
       {/* Session Banner */}
-      <div style={{
-        background: 'linear-gradient(135deg, rgba(201, 162, 39, 0.15) 0%, rgba(255, 255, 255, 0.9) 100%)',
-        border: '1px solid rgba(201, 162, 39, 0.2)',
-        borderRadius: '12px',
-        padding: '12px 16px',
-        marginBottom: '16px',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '12px',
-        fontSize: '13px',
-      }}>
-        <span style={{ fontSize: '18px' }}>📅</span>
-        <div style={{ flex: 1 }}>
-          <div style={{ fontWeight: '600', color: '#2c3e50' }}>
-            Next session with Dr. Thompson
-          </div>
-          <div style={{ color: '#8fa3b5', fontSize: '12px' }}>
-            Tomorrow • 2:00 PM
-          </div>
-        </div>
-      </div>
+      <SessionBanner
+        coachName={sessionData.coachName}
+        nextSession={sessionData.nextSession}
+        fullDate={sessionData.fullDate}
+        sessionType={sessionData.sessionType}
+        sessionAddress={sessionData.sessionAddress}
+        hasSession={sessionData.hasSession}
+        onSchedule={handleScheduleSession}
+        onDetails={handleSessionDetails}
+        onReschedule={handleRescheduleSession}
+        onCancel={handleCancelSession}
+      />
+
+      {/* Scheduling Modal */}
+      <SchedulingModal
+        coachName={sessionData.coachName}
+        isOpen={showSchedulingModal}
+        onClose={() => setShowSchedulingModal(false)}
+        onConfirm={handleBookingConfirm}
+        mode={rescheduleMode ? 'reschedule' : 'new'}
+        currentSessionDate={sessionData.fullDate}
+        currentSessionType={sessionData.sessionType}
+      />
+
+      {/* Cancel Dialog */}
+      <CancelSessionDialog
+        isOpen={showCancelDialog}
+        sessionDate={sessionData.fullDate}
+        onConfirm={handleConfirmCancel}
+        onDismiss={() => setShowCancelDialog(false)}
+      />
 
       {/* Daily Mood Check-in Modal */}
       {showMoodCheckIn && (

@@ -157,7 +157,7 @@ function ClientOnboarding({ user, onComplete, onLogout }) {
       justifyContent: 'center', 
       minHeight: '70vh',
     }}>
-      <div style={{ textAlign: 'center', maxWidth: '500px' }}>
+      <div style={{ textAlign: 'center', maxWidth: '400px' }}>
         <div style={{ fontSize: '64px', marginBottom: '24px' }}></div>
         <h1 style={{ color: '#2c3e50', marginBottom: '16px' }}>
           Welcome, {user?.name?.split(' ')[0] || 'there'}
@@ -196,7 +196,7 @@ function ClientOnboarding({ user, onComplete, onLogout }) {
 
   // Questions Screen
   const QuestionsScreen = () => (
-    <div style={{ maxWidth: '700px', margin: '0 auto', paddingBottom: '40px' }}>
+    <div style={{ maxWidth: '400px', margin: '0 auto', paddingBottom: '40px' }}>
       {/* Phase Header */}
       <div style={{ textAlign: 'center', marginBottom: '30px' }}>
         <div style={{ fontSize: '56px', marginBottom: '16px' }}>{currentPhase.icon}</div>

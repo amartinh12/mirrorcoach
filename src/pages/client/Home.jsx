@@ -17,7 +17,7 @@ function Home() {
   ];
 
   return (
-    <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+    <div style={{ maxWidth: '400px', margin: '0 auto' }}>
       {/* Welcome */}
       <div style={{ marginBottom: '30px' }}>
         <h1 style={{ marginBottom: '8px', color: '#2c3e50' }}>

@@ -116,7 +116,7 @@ function ClientDetail() {
 
   return (
     <div style={{
-      maxWidth: '1200px',
+      maxWidth: '960px',
       margin: '0 auto',
       padding: '0 20px',
       width: '100%',
@@ -549,7 +549,7 @@ function ClientDetail() {
           <div style={{
             background: '#fff',
             borderRadius: '12px',
-            maxWidth: '900px',
+            maxWidth: '960px',
             width: '100%',
             maxHeight: '90vh',
             overflowY: 'auto',

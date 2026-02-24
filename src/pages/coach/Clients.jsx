@@ -39,10 +39,11 @@ function Clients({ user }) {
 
   return (
     <div style={{
-      maxWidth: '1200px',
-      margin: '0 auto',
-      padding: '0 20px',
+      maxWidth: '960px',
+      marginLeft: 'auto',
+      marginRight: 'auto',
       width: '100%',
+      padding: '0 24px',
     }}>
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>

@@ -323,7 +323,7 @@ function Onboarding({ user, onComplete, onLogout }) {
 
   // Profile Form
   const ProfileForm = () => (
-    <div style={{ maxWidth: '700px', margin: '0 auto' }}>
+    <div style={{ maxWidth: '960px', margin: '0 auto' }}>
       <div style={{ textAlign: 'center', marginBottom: '40px' }}>
         <h1 style={{ color: '#2c3e50', marginBottom: '12px' }}>
           Welcome to <span style={{ color: '#c9a227' }}>MirrorCoach</span>
@@ -564,7 +564,7 @@ function Onboarding({ user, onComplete, onLogout }) {
     };
 
     return (
-      <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+      <div style={{ maxWidth: '960px', margin: '0 auto' }}>
         {/* Phase Header */}
         <div style={{ textAlign: 'center', marginBottom: '20px' }}>
           <div style={{

@@ -1,6 +1,67 @@
 import { useState } from 'react';
+import SessionBanner from '../../components/SessionBanner';
+import SchedulingModal from '../../components/SchedulingModal';
+import CancelSessionDialog from '../../components/CancelSessionDialog';
 
 function Library() {
+  const [showSchedulingModal, setShowSchedulingModal] = useState(false);
+  const [showCancelDialog, setShowCancelDialog] = useState(false);
+  const [rescheduleMode, setRescheduleMode] = useState(false);
+
+  const [sessionData, setSessionData] = useState({
+    coachName: 'Dr. Thompson',
+    nextSession: 'Tomorrow • 2:00 PM',
+    fullDate: 'Tuesday, January 28, 2025 • 2:00 PM',
+    sessionType: 'in-person',
+    sessionAddress: '123 Wellness Ave, Suite 200',
+    hasSession: true,
+  });
+
+  const handleScheduleSession = () => {
+    setRescheduleMode(false);
+    setShowSchedulingModal(true);
+  };
+
+  const handleSessionDetails = () => {
+    alert('Opening session details panel...');
+  };
+
+  const handleRescheduleSession = () => {
+    setRescheduleMode(true);
+    setShowSchedulingModal(true);
+  };
+
+  const handleCancelSession = () => {
+    setShowCancelDialog(true);
+  };
+
+  const handleConfirmCancel = () => {
+    setSessionData(prev => ({
+      ...prev,
+      hasSession: false,
+    }));
+    setShowCancelDialog(false);
+    alert('Session cancelled');
+  };
+
+  const handleBookingConfirm = (bookingData) => {
+    if (bookingData.mode === 'reschedule') {
+      const dateParts = bookingData.date.split(',');
+      const nextSessionDate = `${dateParts[0]}, ${dateParts[1].trim()}`;
+      setSessionData(prev => ({
+        ...prev,
+        nextSession: `${nextSessionDate} • ${bookingData.time}`,
+        fullDate: `${bookingData.date} • ${bookingData.time}`,
+        sessionType: bookingData.type,
+      }));
+      alert(`Session rescheduled! ${bookingData.date} at ${bookingData.time} - ${bookingData.type === 'video' ? 'Video Call' : 'In Person'}`);
+    } else {
+      alert(`Booking confirmed! ${bookingData.date} at ${bookingData.time} - ${bookingData.type === 'video' ? 'Video Call' : 'In Person'}`);
+    }
+    setShowSchedulingModal(false);
+    setRescheduleMode(false);
+  };
+
   const coachContent = [
     {
       id: 1,
@@ -168,7 +229,7 @@ function Library() {
   );
 
   return (
-    <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+    <div style={{ maxWidth: '400px', margin: '0 auto' }}>
       {/* Header */}
       <div style={{ marginBottom: '30px' }}>
         <h1 style={{ marginBottom: '8px', color: '#2c3e50' }}>
@@ -178,6 +239,39 @@ function Library() {
           Articles, meditations, and resources to support your journey
         </p>
       </div>
+
+      {/* Session Banner */}
+      <SessionBanner
+        coachName={sessionData.coachName}
+        nextSession={sessionData.nextSession}
+        fullDate={sessionData.fullDate}
+        sessionType={sessionData.sessionType}
+        sessionAddress={sessionData.sessionAddress}
+        hasSession={sessionData.hasSession}
+        onSchedule={handleScheduleSession}
+        onDetails={handleSessionDetails}
+        onReschedule={handleRescheduleSession}
+        onCancel={handleCancelSession}
+      />
+
+      {/* Scheduling Modal */}
+      <SchedulingModal
+        coachName={sessionData.coachName}
+        isOpen={showSchedulingModal}
+        onClose={() => setShowSchedulingModal(false)}
+        onConfirm={handleBookingConfirm}
+        mode={rescheduleMode ? 'reschedule' : 'new'}
+        currentSessionDate={sessionData.fullDate}
+        currentSessionType={sessionData.sessionType}
+      />
+
+      {/* Cancel Dialog */}
+      <CancelSessionDialog
+        isOpen={showCancelDialog}
+        sessionDate={sessionData.fullDate}
+        onConfirm={handleConfirmCancel}
+        onDismiss={() => setShowCancelDialog(false)}
+      />
 
       {/* From Your Coach Section */}
       <div style={{ marginBottom: '32px' }}>

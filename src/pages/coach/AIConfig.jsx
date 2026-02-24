@@ -5,7 +5,6 @@ function AIConfig() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('personality');
   const [regeneratePrompt, setRegeneratePrompt] = useState('');
-  const [showAddClient, setShowAddClient] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [previewChanges, setPreviewChanges] = useState(null);
 
@@ -195,23 +194,24 @@ function AIConfig() {
 
   return (
     <div style={{
-      maxWidth: '1200px',
-      margin: '0 auto',
-      padding: '0 20px',
+      maxWidth: '960px',
+      marginLeft: 'auto',
+      marginRight: 'auto',
       width: '100%',
+      padding: '0 24px',
     }}>
       {/* Header */}
-      <div style={{ marginBottom: '30px' }}>
-        <h1 style={{ marginBottom: '8px', color: '#2c3e50' }}>
-          Your AI Setup
-        </h1>
-        <p style={{ fontSize: '16px', color: '#8fa3b5' }}>
-          Customize how your AI companion thinks, speaks, and supports your clients.
-        </p>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+        <div>
+          <h1 style={{ marginBottom: '8px', color: '#2c3e50' }}>Your AI Setup</h1>
+          <p style={{ fontSize: '16px', color: '#8fa3b5' }}>
+            Customize how your AI companion thinks, speaks, and supports your clients.
+          </p>
+        </div>
       </div>
 
       {/* Tabs */}
-      <div style={{ display: 'flex', gap: '8px', marginBottom: '30px' }}>
+      <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
         {['personality', 'onboarding', 'preview'].map((tab) => (
           <button
             key={tab}

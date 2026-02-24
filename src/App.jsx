@@ -47,13 +47,6 @@ function App() {
     return <div className="loading">Loading...</div>;
   }
 
-  // Determine where to redirect coaches based on onboarding status
-  const getCoachRedirect = () => {
-    if (!user) return '/login';
-    if (user.role !== 'coach') return '/client/chat';
-    if (!user.onboardingComplete) return '/coach/onboarding';
-    return '/coach/clients';
-  };
 
   return (
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
